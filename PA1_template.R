@@ -1,23 +1,5 @@
----
-title: "Movement Pattern"
-author: "Wang Bo"
-date: "Sep 10, 2015"
-output: 
-  html_document: 
-    keep_md: yes
----
-
-This document takes a close look at the data from a personal activity monitoring device. The data shows the steps made in every 5-minute interval. Based on this data, we find some results about the movement pattern during 2 months.
-
-##Loading and preprocessing the data
-```{r,echo=TRUE}
 dataset=read.csv("activity.csv",header=T)  #load data and remove NA value
 dataset1=dataset[!is.na(dataset$steps),]
-```
-
-##Mean total number of steps taken per day
-In this part, I calculate the total number of steps taken per day, plot a histogram and report the mean and median of the total number of steps taken per day.
-```{r,echo=TRUE}
 library(reshape2)
 #calculate total steps by day
 datamelt=melt(dataset1,id=c("date","interval"),measure.vars="steps")
@@ -28,15 +10,7 @@ hist(totalperday$steps,breaks=10,xlab="Steps",main="Total Steps Per Day")
 mm=c(mean(totalperday$steps),median(totalperday$steps))
 names(mm)=c("mean","median")
 print(mm)
-```
 
-The result shows the mean and the median are 10766.19 and 10765.00 respectively.
-
-##The average daily activity pattern
-
-In this part, I make a plot first to show the average steps made in every 5-minute intervals, and then find the maximum value.
-
-```{r,echo=TRUE}
 #calculate average steps by 5-minute intervals
 averageperinterval=dcast(datamelt,interval~variable,mean)
 #time sequence
@@ -47,15 +21,7 @@ plot(timeseq,averageperinterval$steps,type="l",xlab="5-minute interval index",
 #find the maximun value
 x=averageperinterval[averageperinterval$steps==max(averageperinterval$steps),]
 print(x)
-```
 
-The result shows the maximum value of average steps is 206.1698, and the interval of 835 shows that this value is in the interval from 8:35 to 8:40.
-
-##Missing values
-
-In this part, I will fill the NA values to the dataset. I adopt the strategy that using the mean for that 5-minute interval. This is because there are some values missing in a whole day so using the mean/median for that day is impossible.
-
-```{r,echo=TRUE}
 #number of missing values
 nanumber=nrow(dataset)-nrow(dataset1)
 names(nanumber)="number of missing values"
@@ -79,19 +45,11 @@ mm=c(mean(totalperday$steps),median(totalperday$steps),
      mean(totalperday1$steps),median(totalperday1$steps))
 names(mm)=c("mean original","median original","mean new","median new")
 print(mm)
-```
 
-We can see there is no significant difference. This is possibly because I just replace the NAs with mean values so the mean is the same and the median is slightly different.
-
-##Differences in activity patterns between weekdays and weekends
-
-This part is to compare if there is any difference of movement pattern between weekdays and weekends. First I create a factor column to identify the date is weekday or weenend. And then I make the plot respectively. **Note: Since my operation system language is Chinese, I have to write the weekdays in Chinese. When you run the code, firstly you need to change it into English such as Saturday or Sat.**
-
-```{r,echo=TRUE}
 #create a factor column to identify if the date is weekend or not
 newdataset$weekday=logical(nrow(newdataset))
 newdataset$date=as.Date(newdataset$date)
-newdataset$weekday=!weekdays(newdataset$date)%in%c("星期六","星期日") #Change it into Sat or whatever
+newdataset$weekday=!weekdays(newdataset$date)%in%c("星期六","星期日")
 newdataset$weekday=as.factor(newdataset$weekday)
 levels(newdataset$weekday)=c("weekend","weekday")
 #calculate average steps by 5-minute intervals
@@ -108,6 +66,3 @@ g=ggplot(averageperinterval1,aes(timeseq1,steps))
 g=g+geom_line()
 g=g+facet_grid(weekday~.)
 g
-```
-
-We can see from the plot that on weekdays, there are more steps made around 8:30(100th interval or so) and less from 11:40(140th interval or so) to 17:00(200th interval or so).
