@@ -15,6 +15,7 @@ print(mm)
 averageperinterval=dcast(datamelt,interval~variable,mean)
 #time sequence
 timeseq=1:nrow(averageperinterval)
+timeseq=timeseq*5/60
 #make the plot
 plot(timeseq,averageperinterval$steps,type="l",xlab="5-minute interval index",
      ylab="average steps",main="average steps by 5-minute intervals")
@@ -59,6 +60,7 @@ averageperinterval1=dcast(datamelt1,interval+weekday~variable,mean)
 #time sequence
 timeseq1=1:(nrow(averageperinterval1)/2)
 timeseq1=rep(timeseq1,each=2)
+timeseq1=timeseq1*5/60
 averageperinterval1=cbind(timeseq1,averageperinterval1)
 #make the plot
 library(ggplot2)

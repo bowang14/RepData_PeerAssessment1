@@ -49,6 +49,7 @@ In this part, I make a plot first to show the average steps made in every 5-minu
 averageperinterval=dcast(datamelt,interval~variable,mean)
 #time sequence
 timeseq=1:nrow(averageperinterval)
+timeseq=timeseq*5/60
 #make the plot
 plot(timeseq,averageperinterval$steps,type="l",xlab="5-minute interval index",
      ylab="average steps",main="average steps by 5-minute intervals")
@@ -129,7 +130,7 @@ This part is to compare if there is any difference of movement pattern between w
 #create a factor column to identify if the date is weekend or not
 newdataset$weekday=logical(nrow(newdataset))
 newdataset$date=as.Date(newdataset$date)
-newdataset$weekday=!weekdays(newdataset$date)%in%c("星期六","星期日") #Change it into Sat or whatever
+newdataset$weekday=!weekdays(newdataset$date)%in%c("星期六","星期日") #Change it into "Sat" or whatever
 newdataset$weekday=as.factor(newdataset$weekday)
 levels(newdataset$weekday)=c("weekend","weekday")
 #calculate average steps by 5-minute intervals
@@ -139,6 +140,7 @@ averageperinterval1=dcast(datamelt1,interval+weekday~variable,mean)
 #time sequence
 timeseq1=1:(nrow(averageperinterval1)/2)
 timeseq1=rep(timeseq1,each=2)
+timeseq1=timeseq1*5/60
 averageperinterval1=cbind(timeseq1,averageperinterval1)
 #make the plot
 library(ggplot2)
