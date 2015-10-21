@@ -8,7 +8,9 @@ shinyUI(pageWithSidebar(
                          "cake 3" = "cake 3")),
     h3('Score'),
     numericInput('id2', 'Appearence', 0, min = 0, max = 5, step = 1),
-    numericInput('id3', 'Taste', 0, min = 0, max = 5, step = 1)
+    numericInput('id3', 'Taste', 0, min = 0, max = 5, step = 1),
+    h4('Documentation'),
+    helpText("This app is to give your scores to 3 cakes which are Cake 1, Cake 2 and Cake 3. There are 3 cakes you can select to give your score. You may give your score from 0 to 5 points for apperance and taste respectively. And then the app will calculate the total score automatically.")
   ),
   mainPanel(
     h2('Scoring Results'),
